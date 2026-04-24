@@ -1,5 +1,3 @@
-package main;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -26,7 +24,9 @@ class Bogie {
     }
 }
 
-public class UseCase9TrainConsisntMgmt {
+public class UseCase9TrainConsisntMgmt
+{
+{
 
     // ✅ UC9 Core Logic
     public static Map<String, List<Bogie>> groupBogiesByType(List<Bogie> bogies) {

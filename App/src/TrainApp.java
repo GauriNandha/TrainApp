@@ -3,25 +3,53 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class TrainApp {
+
+    static class Bogie {
+        String type;
+        int capacity;
+
+        public Bogie(String type, int capacity) {
+            this.type = type;
+            this.capacity = capacity;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public int getCapacity() {
+            return capacity;
+        }
+
+        @Override
+        public String toString() {
+            return type + " Bogie | Capacity: " + capacity;
+        }
+    }
 
     private Bogie createBogie(String type, int capacity) {
         return new Bogie(type, capacity);
     }
 
+    // ✅ FIXED METHOD (Core UC9 logic)
+    private static Map<String, List<Bogie>> groupBogiesByType(List<Bogie> bogies) {
+        return bogies.stream()
+                .collect(Collectors.groupingBy(Bogie::getType));
+    }
+
     @Test
-    <UseCase9TrainConsisntMgmt>
     void testGrouping_BogiesGroupedByType() {
         List<Bogie> bogies = List.of(
                 createBogie("Sleeper", 72),
                 createBogie("Sleeper", 80)
         );
 
-        UseCase9TrainConsisntMgmt UseCase9TrainConsisntMgmt = null;
         Map<String, List<Bogie>> result =
                 TrainApp.groupBogiesByType(bogies);
 
@@ -36,14 +64,11 @@ class TrainApp {
                 createBogie("AC Chair", 65)
         );
 
+        // ✅ FIX: Call static method directly
         Map<String, List<Bogie>> result =
                 TrainApp.groupBogiesByType(bogies);
 
         assertEquals(2, result.get("AC Chair").size());
-    }
-
-    private static Map<String, List<Bogie>> groupBogiesByType(List<Bogie> bogies) {
-        return null;
     }
 
     @Test
@@ -125,10 +150,5 @@ class TrainApp {
         TrainApp.groupBogiesByType(bogies);
 
         assertEquals(originalSize, bogies.size());
-    }
-
-    private class Bogie {
-        public Bogie(String type, int capacity) {
-        }
     }
 }
